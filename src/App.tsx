@@ -12,6 +12,44 @@ function App() {
   const [isReady, setIsReady] = useState(false);
   const bellFrames = useRef<HTMLImageElement[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement>();
+  const faviconBellFrames = useRef<string[]>([]);
+
+  useEffect(() => {
+    if (!isReady) {
+      return;
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = 64;
+    canvas.height = 64;
+    const ctx = canvas.getContext("2d");
+    let frame = 0;
+    const tick = () => {
+      const favicon = document.querySelector(
+        "link[rel=icon]"
+      ) as HTMLLinkElement;
+
+      if (faviconBellFrames.current[frame]) {
+        favicon.href = faviconBellFrames.current[frame];
+      }
+      ctx!.clearRect(0, 0, canvas.width, canvas.height);
+      ctx?.drawImage(
+        bellFrames.current[frame % bellFrames.current.length],
+        (canvas.width - bellFrames.current[0].width) / 2,
+        (canvas.height - bellFrames.current[0].height) / 2
+      );
+
+      if (favicon) {
+        faviconBellFrames.current[frame] = canvas.toDataURL("image/png");
+        favicon.href = faviconBellFrames.current[frame];
+      }
+
+      frame++;
+      setTimeout(() => {
+        requestAnimationFrame(tick);
+      }, 200);
+    };
+    requestAnimationFrame(tick);
+  }, [isReady]);
 
   useEffect(() => {
     let readyCount = 0;
