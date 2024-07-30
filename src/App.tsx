@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-// import css from "./App.module.css";
+import css from "./App.module.css";
 import { GIFEncoder, quantize, applyPalette } from "gifenc";
 import bell0 from "./assets/bell0.png";
 import bell1 from "./assets/bell1.png";
@@ -185,11 +185,20 @@ function App() {
   };
 
   return (
-    <>
-      {url ? <img src={url} /> : null}
-      <input type="file" onChange={onImageChange} />
-      <button onClick={download}>Download</button>
-    </>
+    <section className={css.container}>
+      {backgroundImage ? <img src={url} /> : null}
+      <div className={css.upload_container}>
+        <input type="file" className={css.upload} onChange={onImageChange} />
+        <div className={css.upload_button}>
+          <div>Upload</div>
+        </div>
+      </div>
+      {backgroundImage ? (
+        <button className={css.download} onClick={download}>
+          Download
+        </button>
+      ) : null}
+    </section>
   );
 }
 
