@@ -1,25 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import css from "./App.module.css";
+// import css from "./App.module.css";
 import { GIFEncoder, quantize, applyPalette } from "gifenc";
 import bell0 from "./assets/bell0.png";
 import bell1 from "./assets/bell1.png";
 import bell2 from "./assets/bell2.png";
 import bell3 from "./assets/bell3.png";
 const bells = [bell0, bell1, bell2, bell3];
-import postgres from "./assets/postgres.png";
 
 function App() {
   const [url, setUrl] = useState<string>();
   const [isReady, setIsReady] = useState(false);
   const bellFrames = useRef<HTMLImageElement[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement>();
-  const canvasRef = useRef<HTMLCanvasElement>();
 
   useEffect(() => {
-    const img = new Image();
-    img.src = postgres;
-    setBackgroundImage(img);
-
     let readyCount = 0;
     for (let i = 0; i < bells.length; i++) {
       bellFrames.current[i] = document.createElement("img");
